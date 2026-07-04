@@ -1,0 +1,100 @@
+.BlogsIndexPage {
+    section{
+        .posts {
+            @apply grid gap-4;
+
+            .post {
+                a {
+                    @apply flex gap-8;
+
+                    .image {
+                        @apply w-[40dvw] h-[40dvh] rounded-lg;
+                        
+                        img {
+                            @apply rounded-lg;
+                        }
+                    }
+
+                    .content {
+                        @apply space-y-1;
+
+                        .title {
+                            @apply text-2xl font-semibold;
+                        }
+
+                        .date {
+                            @apply text-(--text-2) text-sm;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.BlogPage {
+    .container-fluid {
+        @apply space-y-4;
+
+        .hero {
+            .title {
+                @apply text-center font-semibold;
+                font-size: clamp(24px, 3.2vw, 48px);
+            }
+
+            .date {
+                @apply text-center text-sm text-(--text-2);
+            }
+        }
+
+        .image {
+            @apply w-full h-[50dvh];
+
+            img {
+                @apply object-contain;
+            }
+        }
+
+        .content {
+            h2,
+            h3,
+            h4 {
+                @apply font-semibold;
+
+                &:not(first-of-type) {
+                    @apply mt-8;
+                }
+            }
+
+            h2 {
+                @apply mb-2 text-2xl text-amber-300;
+            }
+
+            h3 {
+                @apply text-xl;
+            }
+
+            ul, ol {
+                @apply pl-8
+            }
+
+            ul {
+                @apply list-disc;
+            }
+
+            ol {
+                @apply list-decimal;
+            }
+
+            img,
+            pre,
+            iframe {
+                @apply my-4;
+            }
+
+            pre {
+                @apply rounded-lg p-4;
+            }
+        }
+    }
+}

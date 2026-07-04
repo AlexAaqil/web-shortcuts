@@ -1,0 +1,87 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+const posts = (await getCollection('blogs')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const categories = new Map<string, number>();
+
+posts.forEach(post => {
+    post.data.categories?.forEach(cat => {
+        categories.set(cat, (categories.get(cat) || 0) + 1);
+    });
+});
+
+const currentCategory = Astro.url.pathname.includes('/categories/') 
+    ? Astro.url.pathname.split('/')[2]?.replace(/-/g, ' ') 
+    : null;
+---
+
+<Layout>
+    <main class="BlogsIndexPage">
+        <section>
+            <div class="container-fluid">
+                <div class="section-header">
+                    <div class="eyebrow">Alex Wambui Musings</div>
+                    <h1 class="title">Blogs</h1>
+                </div>
+
+<div class="category-filter">
+    <a href="/blogs/" class={!currentCategory ? 'active' : ''}>
+        All Posts
+    </a>
+    {Array.from(categories.entries()).map(([category, count]) => {
+        const slug = category.toLowerCase().replace(/\s+/g, '-');
+        const isActive = currentCategory?.toLowerCase() === category.toLowerCase();
+        return (
+            <a 
+                href={`/blogs/${slug}`}
+                class={isActive ? 'active' : ''}
+                key={category}
+            >
+                {category} ({count})
+            </a>
+        );
+    })}
+</div>
+
+                <div class="posts">
+                    {
+                        posts.map((post) => (
+                            <div class="post">
+                                <a href={`/blogs/${post.id}/`}>
+                                    <div class="image">
+                                        {post.data.heroImage && (
+                                            <Image src={post.data.heroImage} alt="" />
+                                        )}
+                                    </div>
+
+                                    <div class="content">
+                                        <h4 class="title">{post.data.title}</h4>
+                                        <p class="description">{post.data.description}</p>
+                                        <p class="date">
+                                            <FormattedDate date={post.data.pubDate} />
+                                        </p>
+
+                                        {post.data.categories && post.data.categories.length > 0 && (
+                                            <div class="post-categories">
+                                                {post.data.categories.map(category => (
+                                                    <span class="category-tag" key={category}>
+                                                        {category}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </a>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>

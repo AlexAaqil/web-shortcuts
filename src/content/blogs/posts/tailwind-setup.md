@@ -1,0 +1,205 @@
+---
+title: 'Tailwind Setup'
+description: 'Basic setup for tailwind'
+pubDate: 'July 04 2026'
+heroImage: '../../../assets/blog-placeholder.jpg'
+categories: ['tailwind']
+---
+
+## Tailwind Setup
+
+### Main Tailwind File
+
+```css
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-sans: sans-serif;
+    --font-accent: "Nunito Sans", helvetica, sans-serif;
+
+    --text-xl-text: var(--xl-text);
+    --text-l-text: var(--l-text);
+    --text-heading-text: var(--heading-text);
+    --text-subheading-text: var(--subheading-text);
+    --text-body-text: var(--body-text);
+    --text-body-label-text: var(--body-label-text);
+
+    --color-light-background: #F5F5F7;
+    --color-light-foreground: #211F20;
+    --color-light-accent: #3A8701;
+    --color-light-accent-foreground: #fff;
+    --color-light-secondary-accent: #B74A00;
+    --color-light-muted-foreground: #6e6e73;
+    --color-light-highlight: #ffffff;
+    --color-light-border: #ededed;
+    --color-light-inline-link: blue;
+
+    --color-dark-background: #131F24;
+    --color-dark-foreground: #FAF9F5;
+    --color-dark-accent: #58CC02;
+    --color-dark-accent-foreground: #000;
+    --color-dark-secondary-accent: #FAC53A;
+    --color-dark-muted-foreground: #52656D;
+    --color-dark-highlight: #37464F;
+    --color-dark-border: #393939;
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-highlight: var(--highlight);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-secondary-accent: var(--secondary-accent);
+    --color-border: var(--border);
+    --color-inline-link: var(--inline-link);
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+:root {
+    /* Font sizes */
+    --xl-text: 96px;
+    --l-text: 48px;
+    --heading-text: 24px;
+    --subheading-text: 16px;
+    --body-text: 16px;
+    --body-label-text: 12px;
+
+    --light-background: #F5F5F7;
+    --light-foreground: #211F20;
+    --light-accent: #378000;
+    --light-accent-foreground: #fff;
+    --light-secondary-accent: #B74A00;
+    --light-muted-foreground: #6e6e73;
+    --light-highlight: #ffffff;
+    --light-border: #ededed;
+    --light-inline-link: blue;
+
+    --dark-background: #131F24;
+    --dark-foreground: #FAF9F5;
+    --dark-accent: #58CC02;
+    --dark-accent-foreground: #000;
+    --dark-secondary-accent: #FAC53A;
+    --dark-muted-foreground: #52656D;
+    --dark-highlight: #37464F;
+    --dark-border: #393939;
+}
+
+:root,
+.light {
+    --background: var(--light-background);
+    --foreground: var(--light-foreground);
+    --accent: var(--light-accent);
+    --accent-foreground: var(--light-accent-foreground);
+    --secondary-accent: var(--light-secondary-accent);
+    --muted-foreground: var(--light-muted-foreground);
+    --highlight: var(--light-highlight);
+    --border: var(--light-border);
+    --inline-link: var(--light-inline-link);
+}
+
+.dark {
+    --background: var(--dark-background);
+    --foreground: var(--dark-foreground);
+    --accent: var(--dark-accent);
+    --accent-foreground: var(--dark-accent-foreground);
+    --secondary-accent: var(--dark-secondary-accent);
+    --muted-foreground: var(--dark-muted-foreground);
+    --highlight: var(--dark-highlight);
+    --border: var(--dark-border);
+}
+
+/* *,
+*::before,
+*::after {
+    outline: 1px solid rgb(255, 223, 223);
+} */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    @apply bg-background text-foreground text-[16px] font-[font-accent];
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-body);
+
+    ul,
+    ol {
+        @apply list-outside;
+
+        li {
+            @apply ml-8;
+        }
+    }
+
+    ul {
+        @apply list-disc;
+    }
+
+    ol {
+        @apply list-decimal;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        @apply font-accent;
+        line-height: 1.03;
+    }
+
+    p {
+        line-height: 1.5;
+    }
+
+    a,
+    button {
+        @apply cursor-pointer;
+    }
+}
+
+@import "./globals";
+```
+
+### Global Styles
+
+```css
+.container-fluid {
+    @apply py-4 px-[4%];
+}
+
+.image {
+    img {
+        @apply h-full w-full object-cover;
+    }
+}
+
+section {
+    &:not(:last-of-type) {
+        @apply mb-15;
+    }
+
+    &:last-of-type {
+        @apply pb-15;
+    }
+
+    .section-header {
+        @apply mb-4;
+
+        h2 {
+            @apply font-accent font-bold text-l-text;
+        }
+    }
+}
+```

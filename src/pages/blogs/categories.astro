@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = await getCollection('blogs');
+
+// Group posts by category
+const categoryMap = new Map<string, { posts: typeof posts; count: number }>();
+
+posts.forEach(post => {
+    const categories = post.data.categories || [];
+    categories.forEach(category => {
+        if (!categoryMap.has(category)) {
+            categoryMap.set(category, { posts: [], count: 0 });
+        }
+        const entry = categoryMap.get(category)!;
+        entry.posts.push(post);
+        entry.count++;
+    });
+});
+
+// Sort categories by count (most posts first)
+const sortedCategories = Array.from(categoryMap.entries())
+    .sort((a, b) => b[1].count - a[1].count);
+---
+
+<Layout>
+    <main>
+        <div class="container-fluid">
+            <h1>Blog Categories</h1>
+            <div class="categories-grid">
+                {sortedCategories.map(([category, { posts, count }]) => (
+                    <a 
+                        href={`/blogs/${category.toLowerCase().replace(/\s+/g, '-')}`}
+                        class="category-card"
+                        key={category}
+                    >
+                        <h2>{category}</h2>
+                        <p>{count} post{count !== 1 ? 's' : ''}</p>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </main>
+</Layout>

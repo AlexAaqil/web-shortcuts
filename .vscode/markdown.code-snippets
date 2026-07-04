@@ -1,0 +1,18 @@
+{
+  "New Blog Post": {
+    "prefix": "blogpost",
+    "body": [
+      "---",
+      "title: \"${1:Post Title}\"",
+      "description: \"${2:Post description}\"",
+      "pubDate: \"July 04 2026\"",
+      "heroImage: \"../../../assets/blog-placeholder.jpg\"",
+      "categories: ['category name']",
+      "---",
+      "",
+      "## ${4:Content here...}",
+      "",
+    ],
+    "description": "Create a new blog post"
+  }
+}

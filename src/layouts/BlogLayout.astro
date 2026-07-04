@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Layout from './Layout.astro';
+
+type Props = CollectionEntry<'blogs'>['data'];
+
+const { title, description, pubDate, updatedDate, heroImage, categories } = Astro.props;
+---
+
+<Layout>
+	<Fragment slot="Head">
+		<BaseHead title={title} description={description} />
+	</Fragment>
+
+	<main class="BlogPage">
+		<article>
+            <div class="container-fluid prose">
+                <div class="hero">
+                    <h1 class="title">{title}</h1>
+                    <div class="date">
+                        <FormattedDate date={pubDate} />
+                        {
+                            updatedDate && (
+                                <div class="last-updated-on">
+                                    Last updated on <FormattedDate date={updatedDate} />
+                                </div>
+                            )
+                        }
+                    </div>
+                    {categories && categories.length > 0 && (
+                        <div class="categories">
+                            <span class="label">Categories: </span>
+                            {categories.map((category, index) => (
+                                <span key={category}>
+                                    <a href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}>
+                                        {category}
+                                    </a>
+                                    {index < categories.length - 1 && ', '}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                <div class="image">
+                    {heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+                </div>
+
+                <div class="content">
+                    <slot />
+                </div>
+            </div>
+		</article>
+	</main>
+</Layout>

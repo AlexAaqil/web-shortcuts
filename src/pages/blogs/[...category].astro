@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+    const posts = await getCollection('blogs');
+    const categories = new Set<string>();
+    
+    posts.forEach(post => {
+        post.data.categories?.forEach(cat => categories.add(cat));
+    });
+    
+    return Array.from(categories).map(category => ({
+        params: { category: category.toLowerCase().replace(/\s+/g, '-') },
+        props: { category }
+    }));
+}
+
+const { category } = Astro.props;
+const allPosts = await getCollection('blogs');
+
+// Decode the category from URL
+const decodedCategory = category.replace(/-/g, ' ');
+
+const filteredPosts = allPosts.filter(post => 
+    post.data.categories?.some(cat => 
+        cat.toLowerCase() === decodedCategory.toLowerCase()
+    )
+);
+
+// Sort posts by date (newest first)
+filteredPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout>
+    <main>
+        <div class="container-fluid">
+            <div class="category-header">
+                <h1>Posts in "{decodedCategory}"</h1>
+                <p>{filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''}</p>
+            </div>
+
+            <div class="posts-grid">
+                {filteredPosts.map(post => (
+                    <article class="post-card" key={post.id}>
+                        <a href={`/blogs/${post.id}/`}>
+                            <h2>{post.data.title}</h2>
+                            <p class="description">{post.data.description}</p>
+                            <p class="date">
+                                <FormattedDate date={post.data.pubDate} />
+                            </p>
+                        </a>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </main>
+</Layout>
