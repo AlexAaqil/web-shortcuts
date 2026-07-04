@@ -1,0 +1,142 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { mealsData } from '../../data/meals';
+---
+
+<Layout>
+    <main class="Menu">
+        <section class="Menus">
+            <div class="container-fluid">
+                {mealsData.map((mealGroup) => (
+                <div class="categorized-meals-wrapper">
+                    <h2>{mealGroup.category}</h2>
+                    <div class="meals-wrapper">
+                    {mealGroup.meals.map((meal) => {
+                        // Properly escape the JSON for the data attribute
+                        const mealJson = JSON.stringify(meal).replace(/"/g, '&quot;');
+                        return (
+                        <div class="meal" data-meal={mealJson}>
+                            <div class="image" data-letter={meal.name.charAt(0)}>
+                                <img 
+                                    src={meal.image.src}
+                                    alt={meal.name}
+                                    loading="lazy"
+                                    onerror="this.remove()"
+                                />
+                            </div>
+
+                            <p>{meal.name}</p>
+                            <p>Ksh. {meal.price}</p>
+                        </div>
+                        );
+                    })}
+                    </div>
+                </div>
+                ))}
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="recipe-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div id="modal-body" class="modal-body">
+                <!-- Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get modal elements
+        const modal = document.getElementById('recipe-modal');
+        const modalBody = document.getElementById('modal-body');
+        const closeBtn = document.querySelector('.modal-close');
+        const overlay = document.querySelector('.modal-overlay');
+        
+        let isModalOpen = false;
+
+        // Function to open modal
+        function openModal(mealData:any) {
+            // Check if modalBody exists before using it
+            if (!modalBody) return;
+            
+            // Build the modal content
+            modalBody.innerHTML = `
+                <div class="image">
+                    <img src="${mealData.image.src}" alt="${mealData.name}" />
+                </div>
+                <div class="content">
+                    <h2>${mealData.name}</h2>
+                    <div class="price">Ksh. ${mealData.price}</div>
+                    <div class="price_breakdown">${mealData.price_breakdown ?? 'price breakdown is not given'}</div>
+                    ${mealData.prepTime ? `<div class="prep-time">⏱️ ${mealData.prepTime}</div>` : ''}
+                    ${mealData.description ? `<div class="description">${mealData.description}</div>` : ''}
+                    
+                    <div class="ingredients">
+                        <h3>Ingredients</h3>
+                        <ul>
+                            ${mealData.ingredients.map((ing:string) => `<li>${ing}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <h3>How to Cook</h3>
+                    <div class="instructions">${mealData.instructions}</div>
+                </div>
+            `;
+            
+            // Check if modal exists before using it
+            if (!modal) return;
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            isModalOpen = true;
+        }
+
+        // Function to close modal
+        function closeModal() {
+            if (!modal) return;
+            
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            isModalOpen = false;
+        }
+
+        // Close modal events - check if elements exist
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeModal);
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', closeModal);
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && isModalOpen) {
+                closeModal();
+            }
+        });
+
+        // Also allow clicking on the meal card itself
+        document.querySelectorAll('.meal').forEach((mealElement) => {
+            mealElement.addEventListener('click', (event) => {
+                const mealDataAttr = mealElement.getAttribute('data-meal');
+                if (!mealDataAttr) return;
+                
+                try {
+                    // Decode the HTML entities back to quotes
+                    const decoded = mealDataAttr.replace(/&quot;/g, '"');
+                    const mealData = JSON.parse(decoded);
+                    openModal(mealData);
+                } catch (error) {
+                    console.error('Error parsing meal data:', error);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,114 @@
+.Menu {
+    .Menus {
+        .container-fluid {
+            .categorized-meals-wrapper {
+                @apply mb-12;
+
+                h2 {
+                    @apply text-heading-text font-semibold mb-4;
+                }
+
+                .meals-wrapper {
+                    @apply grid grid-cols-4 gap-8;
+
+                    .meal {
+                        .image {
+                            @apply h-50 rounded-lg mb-4;
+
+                            img {
+                                @apply rounded-lg;
+                            }
+                        }
+
+                        a {
+                            @apply block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.modal {
+    @apply fixed top-0 left-0 w-full h-full z-1000 items-center justify-center p-4;
+    display: none;
+
+    &:not(.hidden) {
+        display: flex;
+    }
+
+    &.hidden {
+        display: none;
+    }
+
+    .modal-overlay {
+        @apply absolute top-0 left-0 w-full h-full;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+        @apply relative bg-dark-background text-foreground rounded-lg w-full max-w-[70dvw] max-h-[90dvh] overflow-y-auto p-4 z-1001;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+        .modal-close {
+            @apply absolute top-4 right-4 w-10 h-10 rounded-full cursor-pointer flex items-center justify-center z-10;
+            background: rgba(255, 255, 255, 0.9);
+            color: #666;
+            border: none;
+            font-size: 28px;
+            transition: all 0.2s;
+    
+            &:hover {
+                background: #f0f0f0;
+                color: #333;
+                transform: rotate(90deg);
+            }
+        }
+
+        .modal-body {
+            .image {
+                @apply h-80 w-full rounded-lg;
+
+                img {
+                    @apply rounded-lg object-center;
+                }
+            }
+
+            .content {
+                @apply p-4 space-y-4;
+
+                h2 {
+                    @apply text-heading-text font-bold;
+                }
+
+                .price {
+                    @apply font-bold;
+                }
+
+                .prep-time {
+                    @apply inline-block;
+                }
+
+                .description {
+                    @apply leading-1.5;
+                }
+
+                .ingredients {
+                    @apply mt-8;
+
+                    h3 {
+                        @apply font-bold;
+                    }
+                }
+
+                .instructions {
+                    line-height: 1.8;
+                    white-space: pre-line;
+                }
+            }
+        }
+    }
+
+}

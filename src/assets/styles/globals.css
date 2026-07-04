@@ -2,4 +2,10 @@
     @apply py-4 px-[4%];
 }
 
+.image {
+    img {
+        @apply w-full h-full object-cover;
+    }
+}
+
 @import './pages/index';

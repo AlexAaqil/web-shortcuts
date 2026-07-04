@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro'
+---
+
+<Layout>
+    <main class="ColorPalletes">
+        <section class="palettes">
+            <div class="container-fluid">
+                <div class="palette-wrapper">
+                    <div class="palette">
+                        <div style="background: #0C0C1E; color: #F5A623">
+                            <p>Deep Blue-Black</p>
+                            <p>#0C0C1E</p>
+                        </div>
+                        <div class="color02" style="background: #F5A623; color: #0C0C1E">
+                            <p>Warm electric Gold</p>
+                            <p>#F5A623</p>
+                        </div>
+                        <div class="color02" style="background: #EAEAEA; color: #0C0C1E">
+                            <p>Soft Grey</p>
+                            <p>#EAEAEA</p>
+                        </div>
+                    </div>
+
+                    <div class="palette">
+                        <div style="background: #ffefb3; color: #013e37">
+                            <p>Butter</p>
+                            <p>#ffefb3</p>
+                        </div>
+                        <div class="color02" style="background: #013e37; color: #ffefb3">
+                            <p>Green</p>
+                            <p>#013e37</p>
+                        </div>
+                    </div>
+
+                    <div class="palette">
+                        <div style="background: #928DAB; color: #1f1c2c">
+                            <p>Gray</p>
+                            <p>#928DAB</p>
+                        </div>
+                        <div style="background: #1f1c2c; color: #928dab">
+                            <p>Steel Gray</p>
+                            <p>#1f1c2c</p>
+                        </div>
+                    </div>
+
+                    <div class="palette">
+                        <div style="background: #f2f8fc; color: #1f1c2c">
+                            <p>Marble</p>
+                            <p>#f2f8fc</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<script>
+    // Add notification spans to ALL hex code elements
+    document.querySelectorAll('.palette p:nth-child(2)').forEach(function(el) {
+        // Create notification span
+        const notification = document.createElement('span');
+        notification.className = 'copied-notification';
+        notification.textContent = 'Copied!';
+        el.appendChild(notification);
+        
+        // Add click handler using arrow function
+        el.addEventListener('click', (event) => {
+            const target = event.currentTarget as HTMLParagraphElement;
+            const hexCode = target.childNodes[0]?.textContent?.trim() || '';
+            navigator.clipboard.writeText(hexCode);
+            
+            const notif = target.querySelector('.copied-notification') as HTMLElement | null;
+            if (notif) {
+                notif.classList.add('show');
+                
+                setTimeout(() => {
+                    notif.classList.remove('show');
+                }, 1500);
+            }
+        });
+    });
+</script>

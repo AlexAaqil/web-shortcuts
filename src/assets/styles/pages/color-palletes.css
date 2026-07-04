@@ -1,0 +1,50 @@
+.ColorPalletes {
+    @apply bg-light-background min-h-dvh;
+
+    .palettes {
+        .container-fluid {
+            .palette-wrapper {
+                .palette {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+
+                    div {
+                        margin: 0 0 32px 0;
+                        height: 100px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2;
+                        align-items: center;
+                        justify-content: center;
+
+                        p {
+                            &:nth-of-type(2) {
+                                cursor: pointer;
+                                position: relative;
+                                display: inline-block;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* Add this notification CSS */
+    .copied-notification {
+        font-size: 12px;
+        color: #00ff00;
+        margin-left: 8px;
+        transition: opacity 0.3s ease;
+        white-space: no-wrap;
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        display: none;
+    }
+
+    .copied-notification.show {
+        display: inline;
+    }
+}
