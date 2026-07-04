@@ -1,11 +1,99 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { AppConfig } from '../data/app.config';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+function getDomain(url: string) {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return url;
+  }
+}
 ---
 
 <Layout>
-	<Welcome />
+	<main class="HomePage">
+		<section class="Header">
+			<div class="container-fluid">
+				<div class="left-side">
+					<a href="http://todos.offline">Todos</a>
+					<a href="http://university.offline">University</a>
+					<a href="file:///C:/Aaqil/Development/shortcuts/color-palettes/index.html">Color Palettes</a>
+				</div>
+
+				<div class="right-side">
+					<a href="">Menu</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="Links">
+			<div class="container-fluid">
+				{AppConfig.categorizedLinks.map((categoryGroup) => (
+				<div class="categorized-links-wrapper">
+					{/* <h2>{categoryGroup.category}</h2> */}
+					<div class="links-wrapper">
+					{categoryGroup.links.map((link) => (
+						<div class="link">
+						<div class="icon" data-letter={link.name.charAt(0)}>
+							<a href={link.url}>
+								<img 
+									src={`https://www.google.com/s2/favicons?domain=${getDomain(link.url)}&sz=64`}
+									alt=""
+									loading="lazy"
+									onerror="this.remove()"
+								/>
+							</a>
+						</div>
+						<a href={link.url}>{link.name}</a>
+						</div>
+					))}
+					</div>
+				</div>
+				))}
+			</div>
+		</section>
+
+		<section class="Affiliates">
+			<div class="container-fluid">
+				<h2>Affiliate Links</h2>
+				<ol>
+					<li>Host Pinnacle: <a href="https://www.hostpinnacle.co.ke/clients/aff.php?aff=2065" class="copy-link">https://www.hostpinnacle.co.ke/clients/aff.php?aff=2065</a><button class="copy-btn" data-link="https://www.hostpinnacle.co.ke/clients/aff.php?aff=2065">Copy</button></li>
+				</ol>
+			</div>
+		</section>
+
+		<section class="Projects">
+			<div class="container-fluid"></div>
+		</section>
+  </main>
 </Layout>
+
+<script>
+	function initCopyButton() {
+		document.querySelectorAll('.copy-btn').forEach(button => {
+			// avoid duplicate listeners
+			if (button.getAttribute('data-listener')) return;
+			button.setAttribute('data-listener', 'true');
+			button.addEventListener('click', (e) => {
+				e.stopPropagation();
+				const link = button.getAttribute('data-link');
+				if (link) {
+					navigator.clipboard.writeText(link).then(() => {
+						const originalText = button.textContent;
+						button.textContent = 'Copied!';
+						setTimeout(() => {
+							button.textContent = originalText === 'Copied!' ? 'Copy' : originalText;
+							if (button.textContent !== 'Copy' && originalText !== 'Copied!') button.textContent = 'Copy';
+						}, 1500);
+					}).catch(() => {
+						button.textContent = 'Error';
+						setTimeout(() => button.textContent = 'Copy', 1000);
+					});
+				}
+			});
+		});
+	}
+
+	initCopyButton();
+</script>
