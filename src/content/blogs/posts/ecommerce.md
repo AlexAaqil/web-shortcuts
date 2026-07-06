@@ -1,7 +1,7 @@
 ---
 title: "Ecommerce"
 description: "Notes about ecommerce"
-pubDate: "July 26 2026"
+pubDate: "July 5 2026"
 heroImage: "../../../assets/blog-placeholder.jpg"
 categories: ['projects', 'ecommerce projects']
 ---
