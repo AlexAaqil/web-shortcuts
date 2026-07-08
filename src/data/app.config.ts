@@ -12,14 +12,17 @@ export const AppConfig = {
         ]
     },
     {
-        category: "E-Learning",
+        category: "Tools",
         links: [
-            { name: "Duolingo", url: "https://duolingo.com" },
+            { name: "Notion", url: "https://app.notion.com" },
+            { name: "Figma", url: "https://figma.com" },
+            { name: "Lucide Icons", url: "https://lucide.dev/icons/" },
         ]
     },
     {
         category: "Chess",
         links: [
+            { name: "Duolingo", url: "https://duolingo.com" },
             { name: "chess.com", url: "https://www.chess.com" },
             { name: "Lichess", url: "https://lichess.org/" },
             { name: "Chessable", url: "https://www.chessable.com/" },
